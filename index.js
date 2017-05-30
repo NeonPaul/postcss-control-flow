@@ -7,7 +7,7 @@ const transformValue = require('postcss-functions/src/transform').transformValue
 
 var varss = {}
 var functions = {
-  n (i){
+  n (i) {
     return i + 'n'
   },
   nth (i, list) {
@@ -150,40 +150,4 @@ const plugin = postcss.plugin('my-plugin', o => function run (css, result) {
 }
 )
 
-postcss([plugin()])
-  .process(
-    `
-    $myVar: 7;
-
-    .example{
-      color: fn($myVar);
-    }
-
-    @macro friend($myVar) {
-      .cls {
-        prop: $myVar;
-      }
-    }
-
-    @friend 11px;
-    .test {
-      bug: red;
-      @friend 22em;
-      frog: yellow;
-    }
-
-    $list: a b c d;
-    $len: length($list);
-
-    *:not(h2:nth-child($myVar)) {
-      color: blue
-    }
-
-    @for $i from 1 to $len {
-      .test:nth-child(n($i) + $len) {
-        color: nth($i, $list)
-      }
-    }
-  `
-  )
-  .then(result => console.log(result.css), err => console.log(err))
+module.exports = plugin
