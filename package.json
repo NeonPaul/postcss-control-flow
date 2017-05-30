@@ -1,0 +1,17 @@
+{
+  "name": "postcss-flow-control",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "postcss": "^6.0.1",
+    "postcss-functions": "^2.1.1",
+    "postcss-simple-vars": "^4.0.0",
+    "postcss-value-parser": "^3.3.0"
+  }
+}
