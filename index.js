@@ -97,22 +97,28 @@ function joinTree (host, donor) {
   }
 }
 
+const nextAtRule = root => {
+  var rtn
+  root.walkAtRules(node => {
+    rtn = node
+    return false
+  })
+  return rtn
+}
+
 const plugin = postcss.plugin('my-plugin', o => function run (css, result) {
   var segments = []
-  var walkResult
+  var node
 
-  do {
-    walkResult = css.walkAtRules(node => {
-      var parent = node.parent
-      var cloneParent = splitTree(node)
-      node.remove()
+  while (node = nextAtRule(css)) {
+    var parent = node.parent
+    var cloneParent = splitTree(node)
+    node.remove()
 
-      segments.push([parent, node, cloneParent])
+    segments.push([parent, node, cloneParent])
 
-      css = cloneParent.root()
-      return false
-    })
-  } while (walkResult === false)
+    css = cloneParent.root()
+  }
 
   var processSegment = n => {
     if (!segments[n]) {
