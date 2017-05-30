@@ -115,6 +115,9 @@ const plugin = postcss.plugin('my-plugin', o => function run (css, result) {
   } while (walkResult === false)
 
   var processSegment = n => {
+    if (!segments[n]) {
+      return Promise.resolve()
+    }
     var root = segments[n][0].root()
     return process(root).then(() => {
       var newRoot = postcss.root()
@@ -131,9 +134,7 @@ const plugin = postcss.plugin('my-plugin', o => function run (css, result) {
         })
       )
     }).then(() => {
-      if (segments[n + 1]) {
-        return processSegment(n + 1)
-      }
+      return processSegment(n + 1)
     })
   }
 
@@ -144,7 +145,7 @@ const plugin = postcss.plugin('my-plugin', o => function run (css, result) {
       joinTree(before, after)
     })
 
-    result.root = segments.pop().pop().root()
+    result.root = segments[0] ? segments.pop().pop().root() : css;
     return
   })
 }
